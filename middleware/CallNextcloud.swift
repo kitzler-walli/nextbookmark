@@ -36,7 +36,18 @@ struct CallNextcloud
                 let swiftyJsonVar = JSON(value)
                 bookmarks.removeAll()
                 for (_, mark) in swiftyJsonVar["data"] {
-                    var newBookmark = Bookmark(id: Int(mark["id"].string!)! , title: mark["title"].string ?? "TITLE" , url: mark["url"].string ?? "URL", tags: mark["tags"].arrayValue.map { $0.stringValue}, folder_ids: mark["folders"].arrayValue.map { $0.intValue})
+                    // Safe parsing of bookmark data
+                    guard let bookmarkId = mark["id"].int ?? Int(mark["id"].stringValue) else {
+                        print("Error: Could not parse bookmark ID from: \(mark["id"])")
+                        continue
+                    }
+                    
+                    let title = mark["title"].string ?? "TITLE"
+                    let url = mark["url"].string ?? "URL" 
+                    let tags = mark["tags"].arrayValue.map { $0.stringValue }
+                    let folderIds = mark["folders"].arrayValue.compactMap { $0.int }
+                    
+                    let newBookmark = Bookmark(id: bookmarkId, title: title, url: url, tags: tags, folder_ids: folderIds)
                     bookmarks.append(newBookmark)
                 }
             case .failure(let error):
@@ -48,17 +59,47 @@ struct CallNextcloud
     
     func get_all_bookmarks_for_folder(folder: Folder, completion: @escaping ([Bookmark]?) -> Void) {
         var bookmarks: [Bookmark] = []
-        let response = AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark?page=-1&folder="+String(folder.id), headers: headers).responseJSON { response in
+        let urlString = urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark?page=-1&folder="+String(folder.id)
+        
+        print("DEBUG: Fetching bookmarks for folder \(folder.id) (\(folder.title))")
+        print("DEBUG: Request URL: \(urlString)")
+        
+        let response = AF.request(urlString, headers: headers).responseJSON { response in
             switch response.result {
             case .success(let value):
+                print("DEBUG: Successfully received response for folder \(folder.id)")
                 let swiftyJsonVar = JSON(value)
+                
+                // Check if response has data field
+                guard swiftyJsonVar["data"].exists() else {
+                    print("ERROR: No 'data' field in response: \(swiftyJsonVar)")
+                    completion(nil)
+                    return
+                }
+                
                 bookmarks.removeAll()
                 for (_, mark) in swiftyJsonVar["data"] {
-                    var newBookmark = Bookmark(id: Int(mark["id"].string!)! , title: mark["title"].string ?? "TITLE" , url: mark["url"].string ?? "URL", tags: mark["tags"].arrayValue.map { $0.stringValue}, folder_ids: mark["folders"].arrayValue.map { $0.intValue})
+                    // Safe parsing of bookmark data
+                    guard let bookmarkId = mark["id"].int ?? Int(mark["id"].stringValue) else {
+                        print("Error: Could not parse bookmark ID from: \(mark["id"])")
+                        continue
+                    }
+                    
+                    let title = mark["title"].string ?? "TITLE"
+                    let url = mark["url"].string ?? "URL" 
+                    let tags = mark["tags"].arrayValue.map { $0.stringValue }
+                    let folderIds = mark["folders"].arrayValue.compactMap { $0.int }
+                    
+                    let newBookmark = Bookmark(id: bookmarkId, title: title, url: url, tags: tags, folder_ids: folderIds)
                     bookmarks.append(newBookmark)
                 }
+                print("DEBUG: Parsed \(bookmarks.count) bookmarks for folder \(folder.id)")
+                
             case .failure(let error):
-                print(error)
+                print("ERROR: Network request failed for folder \(folder.id): \(error)")
+                print("ERROR: Request URL was: \(urlString)")
+                completion(nil)
+                return
             }
             completion(bookmarks)
         }

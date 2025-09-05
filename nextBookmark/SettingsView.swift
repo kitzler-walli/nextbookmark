@@ -7,79 +7,80 @@
 //
 
 import SwiftUI
-import NotificationBannerSwift
 import Alamofire
 import Combine
 
 let sharedUserDefaults = UserDefaults(suiteName: SharedUserDefaults.suiteName)
 
-extension Notification {
-    var keyboardHeight: CGFloat {
-        return (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height ?? 0
-    }
-}
-
-extension Publishers {
-    // 1.
-    static var keyboardHeight: AnyPublisher<CGFloat, Never> {
-        // 2.
-        let willShow = NotificationCenter.default.publisher(for: UIApplication.keyboardWillShowNotification)
-            .map { $0.keyboardHeight }
-        
-        let willHide = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification)
-            .map { _ in CGFloat(0) }
-        
-        // 3.
-        return MergeMany(willShow, willHide)
-            .eraseToAnyPublisher()
-    }
-}
 
 struct SettingsView: View {
-    @State private var keyboardHeight: CGFloat = 0
-    @State var server = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.url) ?? "https://you-nextcloud.instance"
-    @State var username = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.username) ?? "Username"
-    @State var password = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.password) ?? "Password"
+    @State var server = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.url) ?? ""
+    @State var username = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.username) ?? ""
+    @State var password = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.password) ?? ""
+    @State private var showingAlert = false
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
 
     var body: some View {
-        NavigationView{
-            VStack() {
-                VStack(alignment: .leading, spacing: 0.2 ) {
-                    Text("Nextcloud URL")
-                    TextField("server", text: $server)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .keyboardType(.URL)
-                }.padding(.all)
-                
-                VStack(alignment: .leading, spacing: 0.2 ) {
-                Text("Nextcloud Username")
-                    .font(.headline)
-                TextField("username", text: $username)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                }.padding(.all)
-                
-                VStack(alignment: .leading, spacing: 0.2 ) {
-                Text("Nextcloud Password")
-                    .font(.headline)
-                SecureField("password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                }.padding(.all)
-                
-                Spacer()
-                Button(action: {
-                    self.saveSettings()
-                }) {
-                    Text("Save And Test Settings").padding()
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Nextcloud URL")
+                            .font(.headline)
+                        TextField("https://your-nextcloud.instance", text: $server)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .keyboardType(.URL)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Nextcloud Username")
+                            .font(.headline)
+                        TextField("Username", text: $username)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Nextcloud Password")
+                            .font(.headline)
+                        SecureField("Password", text: $password)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    }
+                    
+                    Button(action: {
+                        self.saveSettings()
+                    }) {
+                        Text("Save And Test Settings")
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+                    .padding(.top, 20)
                 }
-            }//.padding(.horizontal, 15)
-            .padding()
-            .padding(.bottom, keyboardHeight).animation(.easeInOut(duration:0.5))
-            .onReceive(Publishers.keyboardHeight) { self.keyboardHeight = $0 }
-        }.navigationBarTitle("Settings", displayMode: .inline)
-        .navigationBarItems(trailing: NavigationLink(destination: ThanksView()) {
-                Text("About")})
+                .padding()
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: ThanksView()) {
+                        Text("About")
+                    }
+                }
+            }
+        }
         .navigationViewStyle(StackNavigationViewStyle())
-        
+        .alert(alertTitle, isPresented: $showingAlert) {
+            Button("OK") { }
+        } message: {
+            Text(alertMessage)
+        }
     }
     
     func saveSettings() {
@@ -87,38 +88,46 @@ struct SettingsView: View {
         sharedUserDefaults?.set(username, forKey: SharedUserDefaults.Keys.username)
         sharedUserDefaults?.set(password, forKey: SharedUserDefaults.Keys.password)
         hello_world()
+        
+        // Post notification to refresh bookmarks view
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            NotificationCenter.default.post(name: Notification.Name("SettingsUpdated"), object: nil)
+        }
     }
     
     func hello_world() {
-        var banner = NotificationBanner(title: "Testing connection", subtitle: "", style: .warning)
-        banner.autoDismiss = false
-        banner.show()
-        var headers: HTTPHeaders
-
-        headers = [
-            .authorization(username: username, password: password),
+        print("DEBUG: Testing connection to Nextcloud...")
+        
+        let headers: HTTPHeaders = [
+            .authorization(username: self.username, password: self.password),
             .accept("application/json")
         ]
-        AF.request(server + "/index.php/apps/bookmarks/public/rest/v2/bookmark?page=0", headers: headers)
+        
+        AF.request(self.server + "/index.php/apps/bookmarks/public/rest/v2/bookmark?page=0", headers: headers)
             .validate(statusCode: 200..<300)
             .responseJSON { response in
-                switch response.result {
-                case .success( _):
-                    debugPrint("AF worked")
-                    banner.dismiss()
-                    banner.autoDismiss = true
-                    banner = NotificationBanner(title: "Success", subtitle: "Can connect to Nextcloud Bookmarks", style: .success)
-                    sharedUserDefaults?.set(true, forKey: SharedUserDefaults.Keys.valid)
-                    banner.show()
-                case .failure( _):
-                    debugPrint("AF fail")
-                    banner.dismiss()
-                    banner.autoDismiss = true
-                    banner = NotificationBanner(title: "Error", subtitle: "Cannot login to Nextcloud Bookmarks", style: .danger)
-                    sharedUserDefaults?.set(false, forKey: SharedUserDefaults.Keys.valid)
-                    banner.show()
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success( _):
+                        print("DEBUG: Connection test successful")
+                        
+                        self.alertTitle = "✅ Success"
+                        self.alertMessage = "Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically."
+                        self.showingAlert = true
+                        
+                        sharedUserDefaults?.set(true, forKey: SharedUserDefaults.Keys.valid)
+                        
+                    case .failure(let error):
+                        print("ERROR: Connection test failed: \(error)")
+                        
+                        self.alertTitle = "❌ Connection Failed"
+                        self.alertMessage = "Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available"
+                        self.showingAlert = true
+                        
+                        sharedUserDefaults?.set(false, forKey: SharedUserDefaults.Keys.valid)
+                    }
                 }
-        }
+            }
     }
 }
 
