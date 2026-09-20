@@ -32,6 +32,8 @@
 		98C4C41024047BAB008EB872 /* privacy_policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 98C4C40F24047BAB008EB872 /* privacy_policy.txt */; };
 		98C774B72440C39900B357B8 /* CallNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */; };
 		42B497082ADB2BFF67D7C218 /* ShareURLExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */; };
+		6D30EF8059ECE5D3BA70C88F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69EB576037489B08E271BBF8 /* Localizable.strings */; };
+		AEB8AE20C61BC8C08AF6CC75 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5A8802770E5D4DA620A9AC67 /* InfoPlist.strings */; };
 		98C774B82440C3A400B357B8 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */; };
 		98C774B92440C3A700B357B8 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3112B240B19EC00D6C5C5 /* Folder.swift */; };
 		98C774BA2440DD6000B357B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98CB33442319A8A000DA4763 /* Assets.xcassets */; };
@@ -46,6 +48,7 @@
 		98E12EFD23A82D7600E6CDD6 /* CallNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */; };
 		7D692828071DDC1945BEFA2E /* ShareURLExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */; };
 		F43988B83A0E01FBC2DBEF61 /* ShareURLExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */; };
+		63C7B8C28B0BD04D37181A87 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6793B284789504C2DBF6443 /* Localizable.strings */; };
 		98E12F0023A82F0500E6CDD6 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */; };
 		98E3112C240B19EC00D6C5C5 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3112B240B19EC00D6C5C5 /* Folder.swift */; };
 		99B2BFC412E0716D4B47ECDE /* libPods-nextBookmark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E211FCF9F243F0DD4C6D257C /* libPods-nextBookmark.a */; };
@@ -138,6 +141,12 @@
 		98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNextcloud.swift; sourceTree = "<group>"; };
 		AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareURLExtractor.swift; sourceTree = "<group>"; };
 		B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareURLExtractorTests.swift; sourceTree = "<group>"; };
+		B2ACB48AB607ECA74C404CAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DF2CBB81654CEAC9C72F2CD7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		64334D8F5CB22182AA8679B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		60CCA0A26371DE66BE8C9477 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7899ACA06C9B33D1CEE39408 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0F4829B117E19D93D91885E5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		98E3112B240B19EC00D6C5C5 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		AF5D595E7ED01270C7D7760F /* libPods-nextBookmark-nextBookmarkUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nextBookmark-nextBookmarkUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +159,36 @@
 		EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BookmarksStoreTests.swift; sourceTree = "<group>"; };
 		FA04B11255EEBD0A493DDBB7 /* Pods-nextBookmark.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmark.debug.xcconfig"; path = "Target Support Files/Pods-nextBookmark/Pods-nextBookmark.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXVariantGroup section */
+		A6793B284789504C2DBF6443 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B2ACB48AB607ECA74C404CAE /* en */,
+				DF2CBB81654CEAC9C72F2CD7 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		69EB576037489B08E271BBF8 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				64334D8F5CB22182AA8679B6 /* en */,
+				60CCA0A26371DE66BE8C9477 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		5A8802770E5D4DA620A9AC67 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7899ACA06C9B33D1CEE39408 /* en */,
+				0F4829B117E19D93D91885E5 /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		98CB33342319A89F00DA4763 /* Frameworks */ = {
@@ -275,6 +314,7 @@
 				8E3C1F203685AC55B02EFB4D /* CredentialsStore.swift */,
 				8EEB5337E9B1A19979A2F282 /* LoginFlowV2.swift */,
 				74335E1E1FD9E71EB42FABD0 /* SafariView.swift */,
+				A6793B284789504C2DBF6443 /* Localizable.strings */,
 			);
 			path = nextBookmark;
 			sourceTree = "<group>";
@@ -308,6 +348,8 @@
 				98CB33712319AD7100DA4763 /* ShareViewController.swift */,
 				98CB33732319AD7100DA4763 /* MainInterface.storyboard */,
 				98CB33762319AD7100DA4763 /* Info.plist */,
+				69EB576037489B08E271BBF8 /* Localizable.strings */,
+				5A8802770E5D4DA620A9AC67 /* InfoPlist.strings */,
 			);
 			path = ShareExtension;
 			sourceTree = "<group>";
@@ -451,6 +493,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
 				Base,
 			);
 			mainGroup = 98CB332E2319A89F00DA4763;
@@ -479,6 +522,7 @@
 				98C4C41024047BAB008EB872 /* privacy_policy.txt in Resources */,
 				98CB33452319A8A000DA4763 /* Assets.xcassets in Resources */,
 				98AED5FB2364FF1D0009ACA3 /* Default-568h@2x.png in Resources */,
+				63C7B8C28B0BD04D37181A87 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +546,8 @@
 			files = (
 				98C774BA2440DD6000B357B8 /* Assets.xcassets in Resources */,
 				98CB33752319AD7100DA4763 /* MainInterface.storyboard in Resources */,
+				6D30EF8059ECE5D3BA70C88F /* Localizable.strings in Resources */,
+				AEB8AE20C61BC8C08AF6CC75 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,7 +54,7 @@ struct BookmarksView: View {
     var body: some View {
         NavigationView{
             VStack{
-                SearchBar(text: $searchText, placeholder: "Filter bookmarks")
+                SearchBar(text: $searchText, placeholder: NSLocalizedString("Filter bookmarks", comment: "Placeholder for the bookmark search field"))
                 OpenFolderRow(folder: store.currentRoot)
 
                 List {

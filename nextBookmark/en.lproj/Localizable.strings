@@ -1,0 +1,39 @@
+/* SettingsView */
+"Nextcloud URL" = "Nextcloud URL";
+"Connected as %@" = "Connected as %@";
+"Log Out" = "Log Out";
+"Log In With Nextcloud" = "Log In With Nextcloud";
+"Hide manual login" = "Hide manual login";
+"Or log in with username & password" = "Or log in with username & password";
+"Nextcloud Username" = "Nextcloud Username";
+"Username" = "Username";
+"Nextcloud Password" = "Nextcloud Password";
+"Password" = "Password";
+"Save And Test Settings" = "Save And Test Settings";
+"Settings" = "Settings";
+"About" = "About";
+"OK" = "OK";
+"✅ Success" = "✅ Success";
+"Successfully connected to Nextcloud Bookmarks as %@! Bookmarks will now load automatically." = "Successfully connected to Nextcloud Bookmarks as %@! Bookmarks will now load automatically.";
+"❌ Login Failed" = "❌ Login Failed";
+"Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically." = "Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically.";
+"❌ Connection Failed" = "❌ Connection Failed";
+"Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available" = "Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available";
+
+/* LoginFlowV2 */
+"Please enter a server URL first." = "Please enter a server URL first.";
+"Could not reach that server. Check the URL and try again." = "Could not reach that server. Check the URL and try again.";
+"Login timed out. Please try again." = "Login timed out. Please try again.";
+
+/* BookmarksView */
+"Filter bookmarks" = "Filter bookmarks";
+"Bookmarks" = "Bookmarks";
+
+/* BookmarksStore */
+"<Pull down to load your bookmarks>" = "<Pull down to load your bookmarks>";
+
+/* ThanksView */
+"Feedback, Issues, Features, Code?..." = "Feedback, Issues, Features, Code?...";
+"Visit me!" = "Visit me!";
+"Privacy Policy" = "Privacy Policy";
+"Also thanks to..." = "Also thanks to...";

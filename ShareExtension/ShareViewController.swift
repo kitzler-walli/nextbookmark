@@ -35,13 +35,13 @@ class ShareViewController: UIViewController {
         ShareURLExtractor.extractURL(from: item) { shareURL in
             DispatchQueue.main.async {
                 guard let shareURL = shareURL else {
-                    self.fail(message: "No link was found to save.")
+                    self.fail(message: NSLocalizedString("No link was found to save.", comment: "Share extension error when nothing shareable was found in the shared item"))
                     return
                 }
                 CallNextcloud().postURL(url: shareURL) { _, error in
                     DispatchQueue.main.async {
                         if let error = error {
-                            self.fail(message: "Couldn't save the bookmark: \(error.localizedDescription)")
+                            self.fail(message: String(format: NSLocalizedString("Couldn't save the bookmark: %@", comment: "Share extension error when saving to Nextcloud fails, %@ is the underlying error description"), error.localizedDescription))
                         } else {
                             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
                         }
@@ -52,8 +52,8 @@ class ShareViewController: UIViewController {
     }
 
     private func fail(message: String) {
-        let alert = UIAlertController(title: "Couldn't Save Bookmark", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+        let alert = UIAlertController(title: NSLocalizedString("Couldn't Save Bookmark", comment: "Share extension alert title when saving a bookmark fails"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Share extension alert dismiss button"), style: .default) { _ in
             self.extensionContext?.cancelRequest(withError: NSError(
                 domain: "at.kw.nextbookmark.ShareExtension",
                 code: 1,

@@ -47,7 +47,7 @@ extension CallNextcloud: NextcloudBookmarksClient {
 final class BookmarksStore: ObservableObject {
     static let rootFolder = Folder(id: -1, title: "/", parent_folder_id: -1, books: [])
 
-    @Published var folders: [Folder] = [.init(id: -20, title: "<Pull down to load your bookmarks>", parent_folder_id: -10, books: [])]
+    @Published var folders: [Folder] = [.init(id: -20, title: NSLocalizedString("<Pull down to load your bookmarks>", comment: "Placeholder folder title shown before the first bookmark load"), parent_folder_id: -10, books: [])]
     @Published var currentRoot: Folder = BookmarksStore.rootFolder
     @Published var allBookmarks: [Bookmark] = []
     @Published var bookmarksCache: [Int: [Bookmark]] = [:]

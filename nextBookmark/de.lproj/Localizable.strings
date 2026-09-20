@@ -1,0 +1,39 @@
+/* SettingsView */
+"Nextcloud URL" = "Nextcloud-URL";
+"Connected as %@" = "Angemeldet als %@";
+"Log Out" = "Abmelden";
+"Log In With Nextcloud" = "Mit Nextcloud anmelden";
+"Hide manual login" = "Manuelle Anmeldung ausblenden";
+"Or log in with username & password" = "Oder mit Benutzername & Passwort anmelden";
+"Nextcloud Username" = "Nextcloud-Benutzername";
+"Username" = "Benutzername";
+"Nextcloud Password" = "Nextcloud-Passwort";
+"Password" = "Passwort";
+"Save And Test Settings" = "Einstellungen speichern & testen";
+"Settings" = "Einstellungen";
+"About" = "Über";
+"OK" = "OK";
+"✅ Success" = "✅ Erfolgreich";
+"Successfully connected to Nextcloud Bookmarks as %@! Bookmarks will now load automatically." = "Erfolgreich als %@ mit Nextcloud Bookmarks verbunden! Lesezeichen werden nun automatisch geladen.";
+"❌ Login Failed" = "❌ Anmeldung fehlgeschlagen";
+"Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically." = "Erfolgreich mit Nextcloud Bookmarks verbunden! Deine Einstellungen wurden gespeichert und Lesezeichen werden nun automatisch geladen.";
+"❌ Connection Failed" = "❌ Verbindung fehlgeschlagen";
+"Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available" = "Verbindung zu Nextcloud Bookmarks nicht möglich.\n\nBitte überprüfe:\n• Die Server-URL ist korrekt\n• Benutzername und Passwort sind gültig\n• Eine Netzwerkverbindung ist vorhanden";
+
+/* LoginFlowV2 */
+"Please enter a server URL first." = "Bitte gib zuerst eine Server-URL ein.";
+"Could not reach that server. Check the URL and try again." = "Der Server konnte nicht erreicht werden. Überprüfe die URL und versuche es erneut.";
+"Login timed out. Please try again." = "Zeitüberschreitung bei der Anmeldung. Bitte versuche es erneut.";
+
+/* BookmarksView */
+"Filter bookmarks" = "Lesezeichen filtern";
+"Bookmarks" = "Lesezeichen";
+
+/* BookmarksStore */
+"<Pull down to load your bookmarks>" = "<Zum Laden deiner Lesezeichen nach unten ziehen>";
+
+/* ThanksView */
+"Feedback, Issues, Features, Code?..." = "Feedback, Probleme, Funktionswünsche, Code?…";
+"Visit me!" = "Besuch mich!";
+"Privacy Policy" = "Datenschutzerklärung";
+"Also thanks to..." = "Danke auch an…";

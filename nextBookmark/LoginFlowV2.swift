@@ -107,7 +107,7 @@ final class LoginFlowV2Coordinator: ObservableObject {
     func start(serverURL: String, client: LoginFlowV2Client) {
         let normalized = Self.normalize(serverURL)
         guard !normalized.isEmpty else {
-            state = .failure("Please enter a server URL first.")
+            state = .failure(NSLocalizedString("Please enter a server URL first.", comment: "Login Flow v2 error when the server URL field is empty"))
             return
         }
 
@@ -115,7 +115,7 @@ final class LoginFlowV2Coordinator: ObservableObject {
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 guard let result = result else {
-                    self.state = .failure("Could not reach that server. Check the URL and try again.")
+                    self.state = .failure(NSLocalizedString("Could not reach that server. Check the URL and try again.", comment: "Login Flow v2 error when initiating the login flow fails"))
                     return
                 }
                 self.pollToken = result.pollToken
@@ -161,7 +161,7 @@ final class LoginFlowV2Coordinator: ObservableObject {
         if attempts > maxAttempts {
             pollTimer?.invalidate()
             pollTimer = nil
-            state = .failure("Login timed out. Please try again.")
+            state = .failure(NSLocalizedString("Login timed out. Please try again.", comment: "Login Flow v2 error after polling exceeds the maximum attempts"))
             return
         }
 

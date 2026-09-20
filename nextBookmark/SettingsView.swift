@@ -144,14 +144,14 @@ struct SettingsView: View {
             case .success(let loginName):
                 isLoggedIn = true
                 loggedInAs = loginName
-                alertTitle = "✅ Success"
-                alertMessage = "Successfully connected to Nextcloud Bookmarks as \(loginName)! Bookmarks will now load automatically."
+                alertTitle = NSLocalizedString("✅ Success", comment: "Alert title after successfully connecting to Nextcloud")
+                alertMessage = String(format: NSLocalizedString("Successfully connected to Nextcloud Bookmarks as %@! Bookmarks will now load automatically.", comment: "Alert message after Login Flow v2 succeeds, %@ is the Nextcloud username"), loginName)
                 dismissOnAlertOK = true
                 showingAlert = true
                 NotificationCenter.default.post(name: Notification.Name("SettingsUpdated"), object: nil)
                 loginCoordinator.cancel()
             case .failure(let message):
-                alertTitle = "❌ Login Failed"
+                alertTitle = NSLocalizedString("❌ Login Failed", comment: "Alert title when Login Flow v2 fails")
                 alertMessage = message
                 dismissOnAlertOK = false
                 showingAlert = true
@@ -195,8 +195,8 @@ struct SettingsView: View {
                         self.loggedInAs = self.username
                         self.password = ""
 
-                        self.alertTitle = "✅ Success"
-                        self.alertMessage = "Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically."
+                        self.alertTitle = NSLocalizedString("✅ Success", comment: "Alert title after successfully connecting to Nextcloud")
+                        self.alertMessage = NSLocalizedString("Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically.", comment: "Alert message after manually testing/saving Nextcloud settings succeeds")
                         self.dismissOnAlertOK = true
                         self.showingAlert = true
 
@@ -205,8 +205,8 @@ struct SettingsView: View {
                     case .failure(let error):
                         print("ERROR: Connection test failed: \(error)")
 
-                        self.alertTitle = "❌ Connection Failed"
-                        self.alertMessage = "Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available"
+                        self.alertTitle = NSLocalizedString("❌ Connection Failed", comment: "Alert title when the manual Nextcloud settings test fails")
+                        self.alertMessage = NSLocalizedString("Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available", comment: "Alert message when the manual Nextcloud settings test fails")
                         self.dismissOnAlertOK = false
                         self.showingAlert = true
                     }
