@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		218C05F8ECA2E3FC76FF4A3F /* BookmarksStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */; };
+		2C56795B6BD9D3676F51721D /* BookmarksStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67671549D21A4045F1757E8 /* BookmarksStore.swift */; };
 		50A089DA9E6F4AA4CEC98F88 /* libPods-nextBookmark-nextBookmarkUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF5D595E7ED01270C7D7760F /* libPods-nextBookmark-nextBookmarkUITests.a */; };
 		98239462235CE2A1005A3AC9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98239461235CE2A1005A3AC9 /* SettingsView.swift */; };
 		9874B04C23C51E9D0070C202 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9874B04B23C51E9D0070C202 /* .gitignore */; };
@@ -122,9 +124,11 @@
 		AF5D595E7ED01270C7D7760F /* libPods-nextBookmark-nextBookmarkUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nextBookmark-nextBookmarkUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2FB1B6E6FA329FB5E0BC8EF /* Pods-nextBookmarkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmarkTests.debug.xcconfig"; path = "Target Support Files/Pods-nextBookmarkTests/Pods-nextBookmarkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BF005C41D01AE8F89CC6EFBB /* Pods-nextBookmark.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmark.release.xcconfig"; path = "Target Support Files/Pods-nextBookmark/Pods-nextBookmark.release.xcconfig"; sourceTree = "<group>"; };
+		C67671549D21A4045F1757E8 /* BookmarksStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BookmarksStore.swift; sourceTree = "<group>"; };
 		DC7A917E06124EC99C6062FE /* Pods-nextBookmarkTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmarkTests.release.xcconfig"; path = "Target Support Files/Pods-nextBookmarkTests/Pods-nextBookmarkTests.release.xcconfig"; sourceTree = "<group>"; };
 		E211FCF9F243F0DD4C6D257C /* libPods-nextBookmark.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nextBookmark.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC94AEBB5A7D99889DF30E41 /* libPods-ShareExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BookmarksStoreTests.swift; sourceTree = "<group>"; };
 		FA04B11255EEBD0A493DDBB7 /* Pods-nextBookmark.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmark.debug.xcconfig"; path = "Target Support Files/Pods-nextBookmark/Pods-nextBookmark.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -247,6 +251,7 @@
 				989C17C1236A2A2F00EE273A /* BookmarksView.swift */,
 				98AE797B240309C3007C36A9 /* Launch Screen.storyboard */,
 				98C4C40B24046515008EB872 /* ThanksView.swift */,
+				C67671549D21A4045F1757E8 /* BookmarksStore.swift */,
 			);
 			path = nextBookmark;
 			sourceTree = "<group>";
@@ -256,6 +261,7 @@
 			children = (
 				98CB33522319A8A000DA4763 /* nextBookmarkTests.swift */,
 				98CB33542319A8A000DA4763 /* Info.plist */,
+				EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */,
 			);
 			path = nextBookmarkTests;
 			sourceTree = "<group>";
@@ -580,6 +586,7 @@
 				98AF64C623245CE70029F327 /* SharedUserDefaults.swift in Sources */,
 				98CB333B2319A89F00DA4763 /* AppDelegate.swift in Sources */,
 				98CB33432319A89F00DA4763 /* nextBookmark.xcdatamodeld in Sources */,
+				2C56795B6BD9D3676F51721D /* BookmarksStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +595,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98CB33532319A8A000DA4763 /* nextBookmarkTests.swift in Sources */,
+				218C05F8ECA2E3FC76FF4A3F /* BookmarksStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -694,7 +702,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -749,7 +757,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -770,7 +778,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3K22348YPB;
 				INFOPLIST_FILE = nextBookmark/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -794,7 +802,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3K22348YPB;
 				INFOPLIST_FILE = nextBookmark/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -7,19 +7,16 @@
 //
 
 import SwiftUI
-import SwiftyJSON
 import SwiftUIRefresh
 
 struct BookmarksView: View {
-    //@State private var currentFolder = -1
-    @State private var isShowing = false
-    @State private var searchText : String = ""
-    private let defaultFolder: Folder = .init(id: -20, title: "<Pull down to load your bookmarks>",  parent_folder_id: -10, books: [])
-    @State var folders: [Folder] = [.init(id: -20, title: "<Pull down to load your bookmarks>",  parent_folder_id: -10, books: [])]
-    
-    @State var currentRoot : Folder = Folder(id: -1, title: "/", parent_folder_id: -1, books: [])
-    @State var allBookmarks: [Bookmark] = []  // Store all bookmarks for global search
-    
+    @StateObject private var store: BookmarksStore
+    @State private var searchText: String = ""
+
+    init(store: BookmarksStore = BookmarksStore()) {
+        _store = StateObject(wrappedValue: store)
+    }
+
     struct OpenFolderRow: View {
         var folder: Folder
         var body: some View {
@@ -29,132 +26,83 @@ struct BookmarksView: View {
             }
         }
     }
-    
+
     struct FolderRow: View {
         var folder: Folder
         var body: some View {
             HStack(){
                 Image(systemName: "folder.fill")
                 Text(folder.title).fontWeight(.bold)
+                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
         }
     }
-    
+
     struct BackFolderRow: View {
         var body: some View {
             HStack(){
                 Image(systemName: "arrowshape.turn.up.left")
+                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
         }
     }
-    
+
     var body: some View {
         NavigationView{
             VStack{
                 SearchBar(text: $searchText, placeholder: "Filter bookmarks")
-                OpenFolderRow(folder: self.currentRoot)
-                
+                OpenFolderRow(folder: store.currentRoot)
+
                 List {
                     // Only show navigation elements when not searching
-                    if self.searchText.isEmpty {
-                        if self.currentRoot.id > -1 {
+                    if searchText.isEmpty {
+                        if store.currentRoot.id > -1 {
                             BackFolderRow().onTapGesture {
-                                if let parentFolder = self.folders.first(where: {$0.id == self.currentRoot.parent_folder_id}) {
-                                    self.currentRoot = parentFolder
-                                    
-                                    CallNextcloud().get_all_bookmarks_for_folder(folder: self.currentRoot) { bookmarks in
-                                        DispatchQueue.main.async {
-                                            if let bookmarks = bookmarks {
-                                                self.currentRoot.books = bookmarks
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    // Fallback to root folder if parent not found
-                                    let rootFolder = Folder(id: -1, title: "/", parent_folder_id: -1, books: [])
-                                    self.currentRoot = rootFolder
-                                    
-                                    CallNextcloud().get_all_bookmarks_for_folder(folder: rootFolder) { bookmarks in
-                                        DispatchQueue.main.async {
-                                            if let bookmarks = bookmarks {
-                                                self.currentRoot.books = bookmarks
-                                            }
-                                        }
-                                    }
-                                }
+                                store.openParentFolder(client: CallNextcloud())
                             }
                         }
-                        
-                        
-                        ForEach(self.folders.filter {
-                            $0.parent_folder_id == self.currentRoot.id && $0.id != self.currentRoot.id
-                        }) { folder in
+
+                        ForEach(store.subfolders) { folder in
                             FolderRow(folder: folder).onTapGesture {
-                                print("DEBUG: Tapping on folder: \(folder.id) - \(folder.title)")
-                                self.currentRoot = folder
-                                CallNextcloud().get_all_bookmarks_for_folder(folder: self.currentRoot) { bookmarks in
-                                    DispatchQueue.main.async {
-                                        if let bookmarks = bookmarks {
-                                            print("DEBUG: Successfully loaded \(bookmarks.count) bookmarks for folder \(folder.id)")
-                                            self.currentRoot.books = bookmarks
-                                        } else {
-                                            print("ERROR: Failed to load bookmarks for folder \(folder.id)")
-                                            // Keep existing bookmarks or clear them
-                                            self.currentRoot.books = []
-                                        }
-                                    }
-                                }
-                            }}
+                                store.openFolder(folder, client: CallNextcloud())
+                            }
+                        }
                     }
-                    
+
+                    // Show a spinner while the currently open folder's bookmarks are still loading
+                    if searchText.isEmpty && store.loadingFolderId == store.currentRoot.id {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                    }
+
                     // Show bookmarks - either search results from all bookmarks or current folder
-                    ForEach(self.searchText.isEmpty ? currentRoot.books : allBookmarks.filter {
-                        $0.title.lowercased().contains(self.searchText.lowercased()) || $0.url.lowercased().contains(self.searchText.lowercased())
-                    }) { book in
+                    ForEach(store.filteredBookmarks(searchText: searchText)) { book in
                         BookmarkRow(book: book)
                     }
                     .onDelete(perform: { indexSet in
-                        if self.searchText.isEmpty {
-                            // Deleting from current folder view
-                            for index in indexSet {
-                                if index < self.currentRoot.books.count {
-                                    let bookToDelete = self.currentRoot.books[index]
-                                    CallNextcloud().delete(bookId: bookToDelete.id)
-                                    self.currentRoot.books.remove(at: index)
-                                    // Also remove from allBookmarks
-                                    if let allIndex = self.allBookmarks.firstIndex(where: { $0.id == bookToDelete.id }) {
-                                        self.allBookmarks.remove(at: allIndex)
-                                    }
-                                }
-                            }
-                        } else {
-                            // Deleting from search results
-                            let filteredBooks = allBookmarks.filter {
-                                $0.title.lowercased().contains(self.searchText.lowercased()) || $0.url.lowercased().contains(self.searchText.lowercased())
-                            }
-                            for index in indexSet {
-                                if index < filteredBooks.count {
-                                    let bookToDelete = filteredBooks[index]
-                                    CallNextcloud().delete(bookId: bookToDelete.id)
-                                    // Remove from allBookmarks
-                                    if let allIndex = self.allBookmarks.firstIndex(where: { $0.id == bookToDelete.id }) {
-                                        self.allBookmarks.remove(at: allIndex)
-                                    }
-                                    // Remove from currentRoot if it's there
-                                    if let currentIndex = self.currentRoot.books.firstIndex(where: { $0.id == bookToDelete.id }) {
-                                        self.currentRoot.books.remove(at: currentIndex)
-                                    }
-                                }
+                        let displayedBooks = store.filteredBookmarks(searchText: searchText)
+                        for index in indexSet {
+                            if index < displayedBooks.count {
+                                store.delete(displayedBooks[index], client: CallNextcloud())
                             }
                         }
                     })
-                    
+
                 }
             }
-            .pullToRefresh(isShowing: $isShowing) {
-                print("DEBUG: Pull to refresh triggered")
+            .pullToRefresh(isShowing: Binding(
+                get: { store.isRefreshing },
+                set: { store.isRefreshing = $0 }
+            )) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self.performFullRefresh()
+                    store.performFullRefresh(client: CallNextcloud())
                 }
             }
             .navigationTitle("Bookmarks")
@@ -168,82 +116,13 @@ struct BookmarksView: View {
             }
         }.navigationViewStyle(StackNavigationViewStyle())
             .onAppear() {
-                self.performFullRefresh()
+                // Only do a full reload on first launch; returning from Settings shouldn't
+                // re-fetch everything when nothing changed (see SettingsUpdated below).
+                store.handleOnAppear(client: CallNextcloud())
             }
             .onReceive(NotificationCenter.default.publisher(for: Notification.Name("SettingsUpdated"))) { _ in
-                print("DEBUG: Settings updated, performing full refresh")
-                self.performFullRefresh()
+                store.performFullRefresh(client: CallNextcloud())
             }
-    }
-    
-    func startUpCheck() {
-        let validConnection = sharedUserDefaults?.bool(forKey: SharedUserDefaults.Keys.valid) ?? false
-        if !validConnection {
-            print("WARNING: Missing Nextcloud credentials. Please enter valid credentials in Settings.")
-        }
-    }
-    
-    
-    func performFullRefresh() {
-        print("DEBUG: Starting full refresh...")
-        self.startUpCheck()
-        
-        // Reset to loading state - this will show the spinner
-        self.isShowing = true
-        
-        // First, reload the folder hierarchy
-        CallNextcloud().requestFolderHierarchy() { jason in
-            DispatchQueue.main.async {
-                if let jason = jason {
-                    print("DEBUG: Successfully reloaded folder hierarchy")
-                    self.folders = CallNextcloud().makeFolders(json: jason)
-                    self.folders.append(Folder(id: -1, title: "/", parent_folder_id: -1, books: []))
-                    
-                    // Reset to root folder if we're not already there
-                    if self.currentRoot.id != -1 {
-                        self.currentRoot = Folder(id: -1, title: "/", parent_folder_id: -1, books: [])
-                    }
-                    
-                    print("DEBUG: Reloaded \(self.folders.count) folders")
-                    
-                    // Load all bookmarks for global search
-                    CallNextcloud().get_all_bookmarks() { allBooks in
-                        DispatchQueue.main.async {
-                            if let allBooks = allBooks {
-                                print("DEBUG: Loaded \(allBooks.count) total bookmarks for search")
-                                self.allBookmarks = allBooks
-                            } else {
-                                print("ERROR: Failed to load all bookmarks")
-                                self.allBookmarks = []
-                            }
-                            
-                            // Then reload bookmarks for current folder
-                            CallNextcloud().get_all_bookmarks_for_folder(folder: self.currentRoot) { bookmarks in
-                                DispatchQueue.main.async {
-                                    if let bookmarks = bookmarks {
-                                        print("DEBUG: Reloaded \(bookmarks.count) bookmarks for current folder")
-                                        self.currentRoot.books = bookmarks
-                                    } else {
-                                        print("ERROR: Failed to reload bookmarks")
-                                        self.currentRoot.books = []
-                                    }
-                                    // Hide spinner only after everything is complete
-                                    print("DEBUG: Full refresh completed, hiding spinner")
-                                    self.isShowing = false
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    print("ERROR: Failed to reload folder hierarchy")
-                    self.currentRoot.books = []
-                    self.allBookmarks = []
-                    // Hide spinner on error
-                    print("DEBUG: Full refresh failed, hiding spinner")
-                    self.isShowing = false
-                }
-            }
-        }
     }
 }
 
@@ -284,46 +163,48 @@ private func tagsAvailable(for book: Bookmark) -> Bool {
 
 struct BookmarksView_Previews: PreviewProvider {
     static var previews: some View {
-        BookmarksView(folders : [
-            Folder.init(id: -20, title: "<Pull down to load your bookmarks>",  parent_folder_id: -10, books: [Bookmark.init(id: 1, title: "Title", url: "http://localhost", tags: ["tag", "tag"], folder_ids: [-20])])
-        ])
+        let store = BookmarksStore()
+        store.folders = [
+            Folder(id: -20, title: "<Pull down to load your bookmarks>", parent_folder_id: -10, books: [Bookmark(id: 1, title: "Title", url: "http://localhost", tags: ["tag", "tag"], folder_ids: [-20])])
+        ]
+        return BookmarksView(store: store)
     }
 }
 
 struct SearchBar: UIViewRepresentable {
-    
+
     @Binding var text: String
     var placeholder: String
-    
+
     class Coordinator: NSObject, UISearchBarDelegate {
-        
+
         @Binding var text: String
-        
+
         init(text: Binding<String>) {
             _text = text
         }
-        
+
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
             text = searchText
         }
-        
+
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             text = ""
             searchBar.text = ""
             searchBar.resignFirstResponder()
             searchBar.endEditing(true)
         }
-        
+
         func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
             searchBar.resignFirstResponder()
             searchBar.endEditing(true)
         }
     }
-    
+
     func makeCoordinator() -> SearchBar.Coordinator {
         return Coordinator(text: $text)
     }
-    
+
     func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
         let searchBar = UISearchBar(frame: .zero)
         //searchBar.delegate = context.coordinator
@@ -334,7 +215,7 @@ struct SearchBar: UIViewRepresentable {
         searchBar.showsCancelButton = true
         return searchBar
     }
-    
+
     func updateUIView(_ uiView: UISearchBar, context: UIViewRepresentableContext<SearchBar>) {
         uiView.text = text
     }
