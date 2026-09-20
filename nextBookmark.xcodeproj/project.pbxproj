@@ -31,6 +31,7 @@
 		98C4C40E240476C3008EB872 /* privacy_policy.md in Resources */ = {isa = PBXBuildFile; fileRef = 98C4C40D240476C3008EB872 /* privacy_policy.md */; };
 		98C4C41024047BAB008EB872 /* privacy_policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = 98C4C40F24047BAB008EB872 /* privacy_policy.txt */; };
 		98C774B72440C39900B357B8 /* CallNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */; };
+		42B497082ADB2BFF67D7C218 /* ShareURLExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */; };
 		98C774B82440C3A400B357B8 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */; };
 		98C774B92440C3A700B357B8 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3112B240B19EC00D6C5C5 /* Folder.swift */; };
 		98C774BA2440DD6000B357B8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98CB33442319A8A000DA4763 /* Assets.xcassets */; };
@@ -43,6 +44,8 @@
 		98CB33752319AD7100DA4763 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98CB33732319AD7100DA4763 /* MainInterface.storyboard */; };
 		98CB33792319AD7100DA4763 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 98CB336F2319AD7100DA4763 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		98E12EFD23A82D7600E6CDD6 /* CallNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */; };
+		7D692828071DDC1945BEFA2E /* ShareURLExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */; };
+		F43988B83A0E01FBC2DBEF61 /* ShareURLExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */; };
 		98E12F0023A82F0500E6CDD6 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */; };
 		98E3112C240B19EC00D6C5C5 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3112B240B19EC00D6C5C5 /* Folder.swift */; };
 		99B2BFC412E0716D4B47ECDE /* libPods-nextBookmark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E211FCF9F243F0DD4C6D257C /* libPods-nextBookmark.a */; };
@@ -133,6 +136,8 @@
 		98CB337E2319B4B300DA4763 /* nextBookmark.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = nextBookmark.entitlements; sourceTree = "<group>"; };
 		98CB337F2319B6B700DA4763 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNextcloud.swift; sourceTree = "<group>"; };
+		AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareURLExtractor.swift; sourceTree = "<group>"; };
+		B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareURLExtractorTests.swift; sourceTree = "<group>"; };
 		98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		98E3112B240B19EC00D6C5C5 /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		AF5D595E7ED01270C7D7760F /* libPods-nextBookmark-nextBookmarkUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nextBookmark-nextBookmarkUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -282,6 +287,7 @@
 				EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */,
 				95DFC1BCAFA4EB4B02124B51 /* CredentialsStoreTests.swift */,
 				0897C0F65B1ADD54F1243FC1 /* LoginFlowV2Tests.swift */,
+				B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */,
 			);
 			path = nextBookmarkTests;
 			sourceTree = "<group>";
@@ -310,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */,
+				AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */,
 			);
 			path = middleware;
 			sourceTree = "<group>";
@@ -599,6 +606,7 @@
 				98239462235CE2A1005A3AC9 /* SettingsView.swift in Sources */,
 				98E3112C240B19EC00D6C5C5 /* Folder.swift in Sources */,
 				98E12EFD23A82D7600E6CDD6 /* CallNextcloud.swift in Sources */,
+				7D692828071DDC1945BEFA2E /* ShareURLExtractor.swift in Sources */,
 				98AED5F52364F5A40009ACA3 /* SceneDelegate.swift in Sources */,
 				98E12F0023A82F0500E6CDD6 /* Bookmark.swift in Sources */,
 				989C17C2236A2A2F00EE273A /* BookmarksView.swift in Sources */,
@@ -622,6 +630,7 @@
 				218C05F8ECA2E3FC76FF4A3F /* BookmarksStoreTests.swift in Sources */,
 				22DE4263D32D24E24BE4652D /* CredentialsStoreTests.swift in Sources */,
 				5465132AF58746A446B858D5 /* LoginFlowV2Tests.swift in Sources */,
+				F43988B83A0E01FBC2DBEF61 /* ShareURLExtractorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +649,7 @@
 				98CB33722319AD7100DA4763 /* ShareViewController.swift in Sources */,
 				98C774B92440C3A700B357B8 /* Folder.swift in Sources */,
 				98C774B72440C39900B357B8 /* CallNextcloud.swift in Sources */,
+				42B497082ADB2BFF67D7C218 /* ShareURLExtractor.swift in Sources */,
 				98AF64C723245CE70029F327 /* SharedUserDefaults.swift in Sources */,
 				98C774B82440C3A400B357B8 /* Bookmark.swift in Sources */,
 				48507DE93FE356CC94BB2018 /* KeychainStore.swift in Sources */,

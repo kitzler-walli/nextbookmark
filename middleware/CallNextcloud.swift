@@ -162,20 +162,18 @@ struct CallNextcloud
         return folders
     }
     
-    func postURL(url: String, completionHandler: @escaping (JSON?) -> Void) {
+    func postURL(url: String, completionHandler: @escaping (JSON?, Error?) -> Void) {
         let parameters: [String: String] = [
             "url": url
         ]
-        var swiftyJsonVar = JSON("")
-        let respons = AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+        AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
             switch response.result {
             case .success(let value):
-                swiftyJsonVar = JSON(value)["data"]
-                print(swiftyJsonVar["data"])
+                let swiftyJsonVar = JSON(value)["data"]
+                completionHandler(swiftyJsonVar, nil)
             case .failure(let error):
-                print(error)
+                completionHandler(nil, error)
             }
-            completionHandler(swiftyJsonVar)
         }
     }
 }

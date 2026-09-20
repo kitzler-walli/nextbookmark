@@ -8,30 +8,6 @@
 
 import UIKit
 import Social
-import MobileCoreServices
-
-extension NSItemProvider {
-    var isText: Bool {
-        hasItemConformingToTypeIdentifier(kUTTypePlainText as String)
-    }
-    
-    var isURL: Bool {
-        hasItemConformingToTypeIdentifier(kUTTypeURL as String)
-    }
-    
-    func getUrl(completion: @escaping (String) -> Void) {
-        loadItem(forTypeIdentifier: kUTTypeURL as String, options: nil) { (url, _) -> Void in
-            completion((url as? NSURL)!.absoluteString!)
-        }
-    }
-    
-    // swiftlint:disable force_cast
-    func getText(completion: @escaping (String) -> Void) {
-        loadItem(forTypeIdentifier: kUTTypePlainText as String, options: nil) { (text, _) -> Void in
-            completion(text as! String)
-        }
-    }
-}
 
 @objc(ShareViewController)
 class ShareViewController: UIViewController {
@@ -55,33 +31,35 @@ class ShareViewController: UIViewController {
     }
         
     override func viewWillAppear(_: Bool) {
-        self.getUrl { shareURL in
-            guard let shareURL = shareURL else {
-                return
-            }
-            CallNextcloud().postURL(url: shareURL, completionHandler: { _ in
-                self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-            })
-        }
-    }
-    
-    private func getUrl(completion: @escaping (String?) -> Void) {
-        guard let item = extensionContext?.inputItems.first as? NSExtensionItem else {
-            completion(nil)
-            return
-        }
-        
-        item.attachments?.forEach { attachment in
-            if attachment.isURL {
-                attachment.getUrl { completion($0) }
-            }
-            if attachment.isText {
-                attachment.getText { text in
-                    if text.hasPrefix("http") {
-                        completion(text)
+        let item = extensionContext?.inputItems.first as? NSExtensionItem
+        ShareURLExtractor.extractURL(from: item) { shareURL in
+            DispatchQueue.main.async {
+                guard let shareURL = shareURL else {
+                    self.fail(message: "No link was found to save.")
+                    return
+                }
+                CallNextcloud().postURL(url: shareURL) { _, error in
+                    DispatchQueue.main.async {
+                        if let error = error {
+                            self.fail(message: "Couldn't save the bookmark: \(error.localizedDescription)")
+                        } else {
+                            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+                        }
                     }
                 }
             }
         }
+    }
+
+    private func fail(message: String) {
+        let alert = UIAlertController(title: "Couldn't Save Bookmark", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            self.extensionContext?.cancelRequest(withError: NSError(
+                domain: "at.kw.nextbookmark.ShareExtension",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: message]
+            ))
+        })
+        present(alert, animated: true)
     }
 }
