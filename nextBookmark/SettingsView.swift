@@ -14,12 +14,15 @@ let sharedUserDefaults = UserDefaults(suiteName: SharedUserDefaults.suiteName)
 
 
 struct SettingsView: View {
+    @Environment(\.dismiss) private var dismiss
+
     @State var server = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.url) ?? ""
     @State var username = ""
     @State var password = ""
     @State private var showingAlert = false
     @State private var alertTitle = ""
     @State private var alertMessage = ""
+    @State private var dismissOnAlertOK = false
 
     @StateObject private var loginCoordinator = LoginFlowV2Coordinator()
     @State private var isLoggedIn = CredentialsStore.isLoggedIn
@@ -115,7 +118,11 @@ struct SettingsView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .alert(alertTitle, isPresented: $showingAlert) {
-            Button("OK") { }
+            Button("OK") {
+                if dismissOnAlertOK {
+                    dismiss()
+                }
+            }
         } message: {
             Text(alertMessage)
         }
@@ -139,12 +146,14 @@ struct SettingsView: View {
                 loggedInAs = loginName
                 alertTitle = "✅ Success"
                 alertMessage = "Successfully connected to Nextcloud Bookmarks as \(loginName)! Bookmarks will now load automatically."
+                dismissOnAlertOK = true
                 showingAlert = true
                 NotificationCenter.default.post(name: Notification.Name("SettingsUpdated"), object: nil)
                 loginCoordinator.cancel()
             case .failure(let message):
                 alertTitle = "❌ Login Failed"
                 alertMessage = message
+                dismissOnAlertOK = false
                 showingAlert = true
                 loginCoordinator.cancel()
             case .idle, .waitingForBrowser:
@@ -188,6 +197,7 @@ struct SettingsView: View {
 
                         self.alertTitle = "✅ Success"
                         self.alertMessage = "Successfully connected to Nextcloud Bookmarks! Your settings have been saved and bookmarks will now load automatically."
+                        self.dismissOnAlertOK = true
                         self.showingAlert = true
 
                         NotificationCenter.default.post(name: Notification.Name("SettingsUpdated"), object: nil)
@@ -197,6 +207,7 @@ struct SettingsView: View {
 
                         self.alertTitle = "❌ Connection Failed"
                         self.alertMessage = "Cannot connect to Nextcloud Bookmarks.\n\nPlease check:\n• Server URL is correct\n• Username and password are valid\n• Network connection is available"
+                        self.dismissOnAlertOK = false
                         self.showingAlert = true
                     }
                 }
