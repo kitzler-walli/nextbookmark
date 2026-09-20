@@ -4,11 +4,11 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.nextBookmark</string>
+		<string>group.at.kw.nextbookmark</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)group.nextBookmark</string>
+		<string>$(AppIdentifierPrefix)group.at.kw.nextbookmark</string>
 	</array>
 </dict>
 </plist>

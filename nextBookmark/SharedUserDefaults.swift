@@ -9,7 +9,7 @@
 import Foundation
 
 struct SharedUserDefaults {
-    static let suiteName = "group.nextBookmark"
+    static let suiteName = "group.at.kw.nextbookmark"
     
     struct Keys {
         static let username = "username"
