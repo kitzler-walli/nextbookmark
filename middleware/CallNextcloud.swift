@@ -19,9 +19,9 @@ struct CallNextcloud
     let headers: HTTPHeaders
     
     init() {
-        usernameFromSettings = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.username) ?? "NO USER NAME"
-        passwordFromSettings = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.password) ?? "NO PASSWORD"
-        urlFromSettings = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.url) ?? "NO URLS"        
+        usernameFromSettings = CredentialsStore.loginName ?? "NO USER NAME"
+        passwordFromSettings = CredentialsStore.appPassword ?? "NO PASSWORD"
+        urlFromSettings = sharedUserDefaults?.string(forKey: SharedUserDefaults.Keys.url) ?? "NO URLS"
         headers = [
             .authorization(username: usernameFromSettings, password: passwordFromSettings),
             .accept("application/json")

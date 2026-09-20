@@ -8,8 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		218C05F8ECA2E3FC76FF4A3F /* BookmarksStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */; };
+		22DE4263D32D24E24BE4652D /* CredentialsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DFC1BCAFA4EB4B02124B51 /* CredentialsStoreTests.swift */; };
 		2C56795B6BD9D3676F51721D /* BookmarksStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67671549D21A4045F1757E8 /* BookmarksStore.swift */; };
+		48507DE93FE356CC94BB2018 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21052C9B7378E030DB383B0F /* KeychainStore.swift */; };
 		50A089DA9E6F4AA4CEC98F88 /* libPods-nextBookmark-nextBookmarkUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF5D595E7ED01270C7D7760F /* libPods-nextBookmark-nextBookmarkUITests.a */; };
+		5465132AF58746A446B858D5 /* LoginFlowV2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0897C0F65B1ADD54F1243FC1 /* LoginFlowV2Tests.swift */; };
+		6AF037F6C206A7075A8C5EE8 /* CredentialsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3C1F203685AC55B02EFB4D /* CredentialsStore.swift */; };
+		6E456E1534F732089B27B8F1 /* CredentialsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3C1F203685AC55B02EFB4D /* CredentialsStore.swift */; };
+		7C11AD61BD90EC09CDE59816 /* LoginFlowV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEB5337E9B1A19979A2F282 /* LoginFlowV2.swift */; };
+		7E48EC9A783247546C4D6621 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21052C9B7378E030DB383B0F /* KeychainStore.swift */; };
 		98239462235CE2A1005A3AC9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98239461235CE2A1005A3AC9 /* SettingsView.swift */; };
 		9874B04C23C51E9D0070C202 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 9874B04B23C51E9D0070C202 /* .gitignore */; };
 		989C17C2236A2A2F00EE273A /* BookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989C17C1236A2A2F00EE273A /* BookmarksView.swift */; };
@@ -39,6 +46,7 @@
 		98E12F0023A82F0500E6CDD6 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */; };
 		98E3112C240B19EC00D6C5C5 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3112B240B19EC00D6C5C5 /* Folder.swift */; };
 		99B2BFC412E0716D4B47ECDE /* libPods-nextBookmark.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E211FCF9F243F0DD4C6D257C /* libPods-nextBookmark.a */; };
+		9F3EF2607387B85ED6EE8A7C /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74335E1E1FD9E71EB42FABD0 /* SafariView.swift */; };
 		BA8907466B3AE9794D867691 /* libPods-nextBookmarkTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 172951938C4D48049EB98C40 /* libPods-nextBookmarkTests.a */; };
 		F11B009B3B13DB5CF79F7850 /* libPods-ShareExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC94AEBB5A7D99889DF30E41 /* libPods-ShareExtension.a */; };
 /* End PBXBuildFile section */
@@ -82,12 +90,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0897C0F65B1ADD54F1243FC1 /* LoginFlowV2Tests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginFlowV2Tests.swift; sourceTree = "<group>"; };
 		172951938C4D48049EB98C40 /* libPods-nextBookmarkTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nextBookmarkTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21052C9B7378E030DB383B0F /* KeychainStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		43BB328613C9BCD48A1DC440 /* Pods-nextBookmark-nextBookmarkUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmark-nextBookmarkUITests.release.xcconfig"; path = "Target Support Files/Pods-nextBookmark-nextBookmarkUITests/Pods-nextBookmark-nextBookmarkUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4C914B2030EC2B8410C0D4A8 /* Pods-nextBookmark-nextBookmarkUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-nextBookmark-nextBookmarkUITests.debug.xcconfig"; path = "Target Support Files/Pods-nextBookmark-nextBookmarkUITests/Pods-nextBookmark-nextBookmarkUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		585C7173629420546C2CC4FC /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		68BC10D1C1C08EFD98A15CE3 /* Pods_nextBookmark.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_nextBookmark.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		74335E1E1FD9E71EB42FABD0 /* SafariView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		8E3C1F203685AC55B02EFB4D /* CredentialsStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CredentialsStore.swift; sourceTree = "<group>"; };
 		8E89D7EF9ECAC41E5BCE44CD /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		8EEB5337E9B1A19979A2F282 /* LoginFlowV2.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LoginFlowV2.swift; sourceTree = "<group>"; };
+		95DFC1BCAFA4EB4B02124B51 /* CredentialsStoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CredentialsStoreTests.swift; sourceTree = "<group>"; };
 		980C219B240219A4008E3856 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98239461235CE2A1005A3AC9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9874B04B23C51E9D0070C202 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -252,6 +266,10 @@
 				98AE797B240309C3007C36A9 /* Launch Screen.storyboard */,
 				98C4C40B24046515008EB872 /* ThanksView.swift */,
 				C67671549D21A4045F1757E8 /* BookmarksStore.swift */,
+				21052C9B7378E030DB383B0F /* KeychainStore.swift */,
+				8E3C1F203685AC55B02EFB4D /* CredentialsStore.swift */,
+				8EEB5337E9B1A19979A2F282 /* LoginFlowV2.swift */,
+				74335E1E1FD9E71EB42FABD0 /* SafariView.swift */,
 			);
 			path = nextBookmark;
 			sourceTree = "<group>";
@@ -262,6 +280,8 @@
 				98CB33522319A8A000DA4763 /* nextBookmarkTests.swift */,
 				98CB33542319A8A000DA4763 /* Info.plist */,
 				EDF4112F567C935DEBD7D606 /* BookmarksStoreTests.swift */,
+				95DFC1BCAFA4EB4B02124B51 /* CredentialsStoreTests.swift */,
+				0897C0F65B1ADD54F1243FC1 /* LoginFlowV2Tests.swift */,
 			);
 			path = nextBookmarkTests;
 			sourceTree = "<group>";
@@ -587,6 +607,10 @@
 				98CB333B2319A89F00DA4763 /* AppDelegate.swift in Sources */,
 				98CB33432319A89F00DA4763 /* nextBookmark.xcdatamodeld in Sources */,
 				2C56795B6BD9D3676F51721D /* BookmarksStore.swift in Sources */,
+				7E48EC9A783247546C4D6621 /* KeychainStore.swift in Sources */,
+				6E456E1534F732089B27B8F1 /* CredentialsStore.swift in Sources */,
+				7C11AD61BD90EC09CDE59816 /* LoginFlowV2.swift in Sources */,
+				9F3EF2607387B85ED6EE8A7C /* SafariView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -596,6 +620,8 @@
 			files = (
 				98CB33532319A8A000DA4763 /* nextBookmarkTests.swift in Sources */,
 				218C05F8ECA2E3FC76FF4A3F /* BookmarksStoreTests.swift in Sources */,
+				22DE4263D32D24E24BE4652D /* CredentialsStoreTests.swift in Sources */,
+				5465132AF58746A446B858D5 /* LoginFlowV2Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +642,8 @@
 				98C774B72440C39900B357B8 /* CallNextcloud.swift in Sources */,
 				98AF64C723245CE70029F327 /* SharedUserDefaults.swift in Sources */,
 				98C774B82440C3A400B357B8 /* Bookmark.swift in Sources */,
+				48507DE93FE356CC94BB2018 /* KeychainStore.swift in Sources */,
+				6AF037F6C206A7075A8C5EE8 /* CredentialsStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

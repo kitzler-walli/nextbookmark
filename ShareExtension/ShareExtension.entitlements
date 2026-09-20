@@ -6,5 +6,9 @@
 	<array>
 		<string>group.nextBookmark</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)group.nextBookmark</string>
+	</array>
 </dict>
 </plist>
