@@ -4,3 +4,7 @@ xcuserdata/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# App Store Connect API credentials — must never be committed
+*.p8
+AuthKey_*.p8

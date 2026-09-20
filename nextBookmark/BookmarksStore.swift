@@ -18,6 +18,8 @@ protocol NextcloudBookmarksClient {
     func fetchAllBookmarks(completion: @escaping ([Bookmark]?) -> Void)
     func fetchBookmarks(forFolder folder: Folder, completion: @escaping ([Bookmark]?) -> Void)
     func deleteBookmark(id: Int)
+    func createBookmark(url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void)
+    func updateBookmark(id: Int, url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void)
 }
 
 extension CallNextcloud: NextcloudBookmarksClient {
@@ -176,6 +178,35 @@ final class BookmarksStore: ObservableObject {
         if let currentIndex = currentRoot.books.firstIndex(where: { $0.id == bookmark.id }) {
             currentRoot.books.remove(at: currentIndex)
             bookmarksCache[currentRoot.id] = currentRoot.books
+        }
+    }
+
+    /// Creates a new bookmark on the server, then re-syncs from the server
+    /// (folder membership can put it anywhere, so a full refresh is simpler
+    /// and more correct than trying to patch local state precisely).
+    func createBookmark(url: String, title: String, tags: [String], folders: [Int], client: NextcloudBookmarksClient, completion: @escaping (Bool) -> Void) {
+        client.createBookmark(url: url, title: title, tags: tags, folders: folders) { [weak self] bookmark, error in
+            guard let self = self, bookmark != nil, error == nil else {
+                completion(false)
+                return
+            }
+            self.performFullRefresh(client: client) {
+                completion(true)
+            }
+        }
+    }
+
+    /// Updates an existing bookmark on the server, then re-syncs from the
+    /// server for the same reason as `createBookmark`.
+    func updateBookmark(id: Int, url: String, title: String, tags: [String], folders: [Int], client: NextcloudBookmarksClient, completion: @escaping (Bool) -> Void) {
+        client.updateBookmark(id: id, url: url, title: title, tags: tags, folders: folders) { [weak self] bookmark, error in
+            guard let self = self, bookmark != nil, error == nil else {
+                completion(false)
+                return
+            }
+            self.performFullRefresh(client: client) {
+                completion(true)
+            }
         }
     }
 

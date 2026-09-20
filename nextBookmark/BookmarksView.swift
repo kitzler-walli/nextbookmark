@@ -12,6 +12,8 @@ import SwiftUIRefresh
 struct BookmarksView: View {
     @StateObject private var store: BookmarksStore
     @State private var searchText: String = ""
+    @State private var editingBookmark: Bookmark?
+    @State private var isAddingBookmark = false
 
     init(store: BookmarksStore = BookmarksStore()) {
         _store = StateObject(wrappedValue: store)
@@ -84,7 +86,9 @@ struct BookmarksView: View {
 
                     // Show bookmarks - either search results from all bookmarks or current folder
                     ForEach(store.filteredBookmarks(searchText: searchText)) { book in
-                        BookmarkRow(book: book)
+                        BookmarkRow(book: book).onTapGesture {
+                            editingBookmark = book
+                        }
                     }
                     .onDelete(perform: { indexSet in
                         let displayedBooks = store.filteredBookmarks(searchText: searchText)
@@ -108,11 +112,22 @@ struct BookmarksView: View {
             .navigationTitle("Bookmarks")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { isAddingBookmark = true }) {
+                        Image(systemName: "plus")
+                    }
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: SettingsView()) {
                         Text("Settings")
                     }
                 }
+            }
+            .sheet(item: $editingBookmark) { book in
+                BookmarkEditView(store: store, bookmark: book, folders: store.folders, defaultFolderId: store.currentRoot.id)
+            }
+            .sheet(isPresented: $isAddingBookmark) {
+                BookmarkEditView(store: store, bookmark: nil, folders: store.folders, defaultFolderId: store.currentRoot.id)
             }
         }.navigationViewStyle(StackNavigationViewStyle())
             .onAppear() {
@@ -130,14 +145,13 @@ struct BookmarkRow: View {
     let book: Bookmark
     var body: some View {
         HStack(){
+            FaviconView(bookmarkId: book.id)
             VStack (alignment: .leading) {
                 Text(book.title).fontWeight(.bold)
                 if tagsAvailable(for: book) {
                     Text((book.tags.joined(separator:", "))).font(.footnote).lineLimit(1)
                 }
                 Text(book.url).font(.footnote).lineLimit(1).foregroundColor(Color.gray)
-            }.onTapGesture {
-                debugPrint("TODO EDIT BOOKMARK")
             }
             Spacer()
             Divider()
@@ -149,6 +163,7 @@ struct BookmarkRow: View {
             }
             .padding(.leading)
         }
+        .contentShape(Rectangle())
     }
 }
 

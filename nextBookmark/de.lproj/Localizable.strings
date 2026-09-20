@@ -37,3 +37,19 @@
 "Visit me!" = "Besuch mich!";
 "Privacy Policy" = "Datenschutzerklärung";
 "Also thanks to..." = "Danke auch an…";
+"An open-source iOS client for Nextcloud Bookmarks." = "Ein quelloffener iOS-Client für Nextcloud Bookmarks.";
+"Originally created by Kai, the original maintainer." = "Ursprünglich erstellt von Kai, dem ursprünglichen Maintainer.";
+"Original Project" = "Ursprüngliches Projekt";
+
+/* BookmarkEditView */
+"URL" = "URL";
+"Title" = "Titel";
+"Tags" = "Tags";
+"Folder" = "Ordner";
+"tag1, tag2" = "tag1, tag2";
+"Edit Bookmark" = "Lesezeichen bearbeiten";
+"Add Bookmark" = "Lesezeichen hinzufügen";
+"Cancel" = "Abbrechen";
+"Save" = "Speichern";
+"Could not save changes." = "Änderungen konnten nicht gespeichert werden.";
+"Could not create bookmark." = "Lesezeichen konnte nicht erstellt werden.";

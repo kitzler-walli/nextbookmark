@@ -14,6 +14,7 @@ class ShareViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        CredentialsStore.clearStaleKeychainAfterReinstallIfNeeded()
         CredentialsStore.migrateFromUserDefaultsIfNeeded()
 
         let blurEffect = UIBlurEffect(style: .dark)

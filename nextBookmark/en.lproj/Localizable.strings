@@ -37,3 +37,19 @@
 "Visit me!" = "Visit me!";
 "Privacy Policy" = "Privacy Policy";
 "Also thanks to..." = "Also thanks to...";
+"An open-source iOS client for Nextcloud Bookmarks." = "An open-source iOS client for Nextcloud Bookmarks.";
+"Originally created by Kai, the original maintainer." = "Originally created by Kai, the original maintainer.";
+"Original Project" = "Original Project";
+
+/* BookmarkEditView */
+"URL" = "URL";
+"Title" = "Title";
+"Tags" = "Tags";
+"Folder" = "Folder";
+"tag1, tag2" = "tag1, tag2";
+"Edit Bookmark" = "Edit Bookmark";
+"Add Bookmark" = "Add Bookmark";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Could not save changes." = "Could not save changes.";
+"Could not create bookmark." = "Could not create bookmark.";

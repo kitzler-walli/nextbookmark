@@ -176,4 +176,51 @@ struct CallNextcloud
             }
         }
     }
+
+    /// Creates a new bookmark with the given fields (used by the manual "add
+    /// bookmark" flow; the Share Extension uses the simpler `postURL` above).
+    func createBookmark(url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void) {
+        let parameters: [String: Any] = ["url": url, "title": title, "tags": tags, "folders": folders]
+        AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                completion(Self.parseBookmark(JSON(value)["item"]), nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /// Updates an existing bookmark's fields.
+    func updateBookmark(id: Int, url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void) {
+        let parameters: [String: Any] = ["url": url, "title": title, "tags": tags, "folders": folders]
+        AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark/\(id)", method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                completion(Self.parseBookmark(JSON(value)["item"]), nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
+        }
+    }
+
+    /// Fetches the favicon image data Nextcloud Bookmarks has cached for a
+    /// bookmark, if any. Returns nil (not an error) if none has been fetched
+    /// server-side yet — the server crawls favicons asynchronously.
+    func fetchFavicon(bookmarkId: Int, completion: @escaping (Data?) -> Void) {
+        AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark/\(bookmarkId)/favicon", headers: headers)
+            .validate(statusCode: 200..<300)
+            .responseData { response in
+                completion(response.data)
+            }
+    }
+
+    private static func parseBookmark(_ mark: JSON) -> Bookmark? {
+        guard let bookmarkId = mark["id"].int ?? Int(mark["id"].stringValue) else { return nil }
+        let title = mark["title"].string ?? ""
+        let url = mark["url"].string ?? ""
+        let tags = mark["tags"].arrayValue.map { $0.stringValue }
+        let folderIds = mark["folders"].arrayValue.compactMap { $0.int }
+        return Bookmark(id: bookmarkId, title: title, url: url, tags: tags, folder_ids: folderIds)
+    }
 }

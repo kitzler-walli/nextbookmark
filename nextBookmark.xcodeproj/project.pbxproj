@@ -48,6 +48,8 @@
 		98E12EFD23A82D7600E6CDD6 /* CallNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */; };
 		7D692828071DDC1945BEFA2E /* ShareURLExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */; };
 		F43988B83A0E01FBC2DBEF61 /* ShareURLExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */; };
+		7E00E7CBCDB91C607914392E /* BookmarkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA22397DF10A3D1F9F3740 /* BookmarkEditView.swift */; };
+		46F270D8902F065EAB7509B6 /* FaviconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE60C571C2C2FEC8CB79776 /* FaviconView.swift */; };
 		63C7B8C28B0BD04D37181A87 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6793B284789504C2DBF6443 /* Localizable.strings */; };
 		98E12F0023A82F0500E6CDD6 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFF23A82F0500E6CDD6 /* Bookmark.swift */; };
 		98E3112C240B19EC00D6C5C5 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E3112B240B19EC00D6C5C5 /* Folder.swift */; };
@@ -141,6 +143,8 @@
 		98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallNextcloud.swift; sourceTree = "<group>"; };
 		AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareURLExtractor.swift; sourceTree = "<group>"; };
 		B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareURLExtractorTests.swift; sourceTree = "<group>"; };
+		42DA22397DF10A3D1F9F3740 /* BookmarkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEditView.swift; sourceTree = "<group>"; };
+		DCE60C571C2C2FEC8CB79776 /* FaviconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconView.swift; sourceTree = "<group>"; };
 		B2ACB48AB607ECA74C404CAE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DF2CBB81654CEAC9C72F2CD7 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		64334D8F5CB22182AA8679B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -314,6 +318,8 @@
 				8E3C1F203685AC55B02EFB4D /* CredentialsStore.swift */,
 				8EEB5337E9B1A19979A2F282 /* LoginFlowV2.swift */,
 				74335E1E1FD9E71EB42FABD0 /* SafariView.swift */,
+				42DA22397DF10A3D1F9F3740 /* BookmarkEditView.swift */,
+				DCE60C571C2C2FEC8CB79776 /* FaviconView.swift */,
 				A6793B284789504C2DBF6443 /* Localizable.strings */,
 			);
 			path = nextBookmark;
@@ -665,6 +671,8 @@
 				6E456E1534F732089B27B8F1 /* CredentialsStore.swift in Sources */,
 				7C11AD61BD90EC09CDE59816 /* LoginFlowV2.swift in Sources */,
 				9F3EF2607387B85ED6EE8A7C /* SafariView.swift in Sources */,
+				7E00E7CBCDB91C607914392E /* BookmarkEditView.swift in Sources */,
+				46F270D8902F065EAB7509B6 /* FaviconView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -58,6 +58,21 @@ final class MockNextcloudClient: NextcloudBookmarksClient {
         deletedBookmarkIds.append(id)
     }
 
+    var createBookmarkResult: Bookmark?
+    var updateBookmarkResult: Bookmark?
+    private(set) var createBookmarkCallCount = 0
+    private(set) var updatedBookmarkIds: [Int] = []
+
+    func createBookmark(url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void) {
+        createBookmarkCallCount += 1
+        completion(createBookmarkResult, nil)
+    }
+
+    func updateBookmark(id: Int, url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void) {
+        updatedBookmarkIds.append(id)
+        completion(updateBookmarkResult, nil)
+    }
+
     /// Resolves whatever fetch was deferred via `deferCompletionForFolderId`.
     func completeDeferredFetch() {
         deferredCompletion?()
@@ -359,6 +374,63 @@ final class BookmarksStoreTests: XCTestCase {
 
         XCTAssertEqual(store.subfolders.map { $0.id }, [4])
         XCTAssertEqual(store.currentRoot.books.map { $0.id }, [1])
+    }
+
+    // MARK: - Create / update
+
+    func testCreateBookmarkRefreshesFromServerOnSuccess() {
+        let client = MockNextcloudClient()
+        client.folderHierarchyResult = [workFolder]
+        client.allBookmarksResult = []
+        client.createBookmarkResult = makeBookmark(1, "GitHub", url: "https://github.com", folders: [-1])
+
+        let store = BookmarksStore()
+        let expectation = expectation(description: "create")
+        store.createBookmark(url: "https://github.com", title: "GitHub", tags: [], folders: [-1], client: client) { success in
+            XCTAssertTrue(success)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1)
+
+        // performFullRefresh's fetchAllBookmarks is scripted to still return
+        // empty here, since the point of this test is just that a refresh
+        // was triggered at all (folderHierarchyCallCount below), not that
+        // the mock realistically echoes the new bookmark back.
+        XCTAssertEqual(client.createBookmarkCallCount, 1)
+        XCTAssertEqual(client.folderHierarchyCallCount, 1, "A successful create should trigger a full refresh")
+    }
+
+    func testCreateBookmarkDoesNotRefreshOnFailure() {
+        let client = MockNextcloudClient()
+        client.folderHierarchyResult = [workFolder]
+        client.createBookmarkResult = nil // simulates an error response
+
+        let store = BookmarksStore()
+        let expectation = expectation(description: "create")
+        store.createBookmark(url: "https://github.com", title: "GitHub", tags: [], folders: [-1], client: client) { success in
+            XCTAssertFalse(success)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1)
+
+        XCTAssertEqual(client.folderHierarchyCallCount, 0, "A failed create must not trigger a refresh")
+    }
+
+    func testUpdateBookmarkRefreshesFromServerOnSuccess() {
+        let client = MockNextcloudClient()
+        client.folderHierarchyResult = [workFolder]
+        client.updateBookmarkResult = makeBookmark(10, "GitHub (renamed)", url: "https://github.com", folders: [2])
+
+        let store = BookmarksStore()
+        let expectation = expectation(description: "update")
+        store.updateBookmark(id: 10, url: "https://github.com", title: "GitHub (renamed)", tags: [], folders: [2], client: client) { success in
+            XCTAssertTrue(success)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1)
+
+        XCTAssertEqual(client.updatedBookmarkIds, [10])
+        XCTAssertEqual(client.folderHierarchyCallCount, 1, "A successful update should trigger a full refresh")
     }
 
     func testOpenParentFolderReturnsToRoot() {

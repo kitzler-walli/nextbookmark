@@ -30,9 +30,8 @@ struct SettingsView: View {
     @State private var showManualLogin = false
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
+        ScrollView {
+            VStack(spacing: 20) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Nextcloud URL")
                             .font(.headline)
@@ -41,6 +40,8 @@ struct SettingsView: View {
                             .keyboardType(.URL)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
+                            .disabled(isLoggedIn)
+                            .foregroundColor(isLoggedIn ? .secondary : .primary)
                     }
 
                     if isLoggedIn {
@@ -103,20 +104,18 @@ struct SettingsView: View {
                         }
                         .padding(.top, 20)
                     }
-                }
-                .padding()
-            }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+
                     NavigationLink(destination: ThanksView()) {
                         Text("About")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
                     }
+                    .padding(.top, 20)
                 }
-            }
+                .padding()
         }
-        .navigationViewStyle(StackNavigationViewStyle())
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
         .alert(alertTitle, isPresented: $showingAlert) {
             Button("OK") {
                 if dismissOnAlertOK {

@@ -14,6 +14,7 @@ enum CredentialsStore {
         static let loginName = "loginName"
         static let appPassword = "appPassword"
         static let migratedToKeychain = "credentialsMigratedToKeychain"
+        static let hasLaunchedSinceInstall = "hasLaunchedSinceInstall"
     }
 
     private static var defaults: UserDefaults? {
@@ -39,6 +40,21 @@ enum CredentialsStore {
         KeychainStore.delete(forKey: Keys.loginName)
         KeychainStore.delete(forKey: Keys.appPassword)
         defaults?.set(false, forKey: SharedUserDefaults.Keys.valid)
+    }
+
+    /// Keychain items survive app deletion, but this app's own UserDefaults
+    /// (including the shared App Group suite the URL/"valid" flag live in)
+    /// don't. Without this, reinstalling after a previous install had logged
+    /// in starts up "logged in" from stale Keychain credentials with no
+    /// server URL to match them — Settings shows "Log Out" with no way back
+    /// to the login button, and no bookmarks load. Clears any pre-existing
+    /// Keychain credentials the first time this install launches. Safe to
+    /// call on every launch; only acts once per install.
+    static func clearStaleKeychainAfterReinstallIfNeeded() {
+        guard defaults?.bool(forKey: Keys.hasLaunchedSinceInstall) != true else { return }
+        KeychainStore.delete(forKey: Keys.loginName)
+        KeychainStore.delete(forKey: Keys.appPassword)
+        defaults?.set(true, forKey: Keys.hasLaunchedSinceInstall)
     }
 
     /// One-time move of any pre-existing username/password from UserDefaults
