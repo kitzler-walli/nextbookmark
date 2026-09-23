@@ -12,6 +12,7 @@ import SwiftUI
 
 struct BookmarkEditView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     let store: BookmarksStore
     let bookmark: Bookmark?
     let folders: [Folder]
@@ -37,6 +38,14 @@ struct BookmarkEditView: View {
 
     private var isEditing: Bool { bookmark != nil }
 
+    /// The URL field's contents as an openable web URL, or nil if it isn't one.
+    private var openableURL: URL? {
+        guard let parsed = URL(string: url.trimmingCharacters(in: .whitespacesAndNewlines)),
+              let scheme = parsed.scheme?.lowercased(),
+              ["http", "https"].contains(scheme) else { return nil }
+        return parsed
+    }
+
     private var isValid: Bool {
         !url.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
@@ -45,10 +54,20 @@ struct BookmarkEditView: View {
         NavigationView {
             Form {
                 Section(header: Text("URL", comment: "Bookmark edit form section header")) {
-                    TextField("https://example.com", text: $url)
-                        .keyboardType(.URL)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
+                    HStack {
+                        TextField("https://example.com", text: $url)
+                            .keyboardType(.URL)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                        Button(action: {
+                            if let openableURL = openableURL { openURL(openableURL) }
+                        }) {
+                            Image(systemName: "safari")
+                        }
+                        .buttonStyle(.borderless)
+                        .disabled(openableURL == nil)
+                        .accessibilityLabel(Text("Open URL", comment: "Accessibility label for the button that opens the bookmark URL in the browser"))
+                    }
                 }
                 Section(header: Text("Title", comment: "Bookmark edit form section header")) {
                     TextField(NSLocalizedString("Title", comment: "Bookmark title field placeholder"), text: $title)

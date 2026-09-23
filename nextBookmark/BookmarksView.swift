@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import SwiftUIRefresh
 
 struct BookmarksView: View {
     @StateObject private var store: BookmarksStore
@@ -100,13 +99,12 @@ struct BookmarksView: View {
                     })
 
                 }
-            }
-            .pullToRefresh(isShowing: Binding(
-                get: { store.isRefreshing },
-                set: { store.isRefreshing = $0 }
-            )) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    store.performFullRefresh(client: CallNextcloud())
+                .refreshable {
+                    await withCheckedContinuation { continuation in
+                        store.performFullRefresh(client: CallNextcloud()) {
+                            continuation.resume()
+                        }
+                    }
                 }
             }
             .navigationTitle("Bookmarks")
@@ -119,8 +117,9 @@ struct BookmarksView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: SettingsView()) {
-                        Text("Settings")
+                        Image(systemName: "gearshape")
                     }
+                    .accessibilityLabel(Text("Settings"))
                 }
             }
             .sheet(item: $editingBookmark) { book in
