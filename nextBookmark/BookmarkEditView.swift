@@ -5,18 +5,35 @@
 //  A single form used both to create a new bookmark and to edit an existing
 //  one. Passing `bookmark: nil` creates; passing a bookmark edits it in
 //  place. Used by BookmarksView for both the manual "+" add flow and
-//  tapping an existing row.
+//  tapping an existing row, and by the Share Extension for shared links.
+//  It is built into both targets, so it only talks to the outside world
+//  through the `onSave`/`onFinish` closures (the extension has no
+//  BookmarksStore).
 //
 
 import SwiftUI
 
+/// The form's contents at the moment Save is tapped.
+struct BookmarkDraft {
+    let url: String
+    let title: String
+    let tags: [String]
+    let folderIds: [Int]
+}
+
 struct BookmarkEditView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
-    let store: BookmarksStore
     let bookmark: Bookmark?
     let folders: [Folder]
-    let defaultFolderId: Int
+    let isLoadingFolders: Bool
+    /// App extensions can't open URLs, so the Share Extension hides the button.
+    let allowsOpeningURL: Bool
+    /// Performs the create/update and reports success.
+    let onSave: (BookmarkDraft, @escaping (Bool) -> Void) -> Void
+    /// Called with `true` after a successful save or `false` on Cancel.
+    /// When nil the view dismisses itself, which is what a sheet wants.
+    let onFinish: ((Bool) -> Void)?
 
     @State private var title: String
     @State private var url: String
@@ -25,13 +42,23 @@ struct BookmarkEditView: View {
     @State private var isSaving = false
     @State private var errorMessage: String?
 
-    init(store: BookmarksStore, bookmark: Bookmark?, folders: [Folder], defaultFolderId: Int) {
-        self.store = store
+    init(bookmark: Bookmark?,
+         folders: [Folder],
+         defaultFolderId: Int,
+         initialURL: String = "",
+         initialTitle: String = "",
+         isLoadingFolders: Bool = false,
+         allowsOpeningURL: Bool = true,
+         onSave: @escaping (BookmarkDraft, @escaping (Bool) -> Void) -> Void,
+         onFinish: ((Bool) -> Void)? = nil) {
         self.bookmark = bookmark
         self.folders = folders
-        self.defaultFolderId = defaultFolderId
-        _title = State(initialValue: bookmark?.title ?? "")
-        _url = State(initialValue: bookmark?.url ?? "")
+        self.isLoadingFolders = isLoadingFolders
+        self.allowsOpeningURL = allowsOpeningURL
+        self.onSave = onSave
+        self.onFinish = onFinish
+        _title = State(initialValue: bookmark?.title ?? initialTitle)
+        _url = State(initialValue: bookmark?.url ?? initialURL)
         _tagsText = State(initialValue: bookmark?.tags.joined(separator: ", ") ?? "")
         _selectedFolderId = State(initialValue: bookmark?.folder_ids.first ?? defaultFolderId)
     }
@@ -59,14 +86,16 @@ struct BookmarkEditView: View {
                             .keyboardType(.URL)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
-                        Button(action: {
-                            if let openableURL = openableURL { openURL(openableURL) }
-                        }) {
-                            Image(systemName: "safari")
+                        if allowsOpeningURL {
+                            Button(action: {
+                                if let openableURL = openableURL { openURL(openableURL) }
+                            }) {
+                                Image(systemName: "safari")
+                            }
+                            .buttonStyle(.borderless)
+                            .disabled(openableURL == nil)
+                            .accessibilityLabel(Text("Open URL", comment: "Accessibility label for the button that opens the bookmark URL in the browser"))
                         }
-                        .buttonStyle(.borderless)
-                        .disabled(openableURL == nil)
-                        .accessibilityLabel(Text("Open URL", comment: "Accessibility label for the button that opens the bookmark URL in the browser"))
                     }
                 }
                 Section(header: Text("Title", comment: "Bookmark edit form section header")) {
@@ -78,10 +107,18 @@ struct BookmarkEditView: View {
                         .disableAutocorrection(true)
                 }
                 Section(header: Text("Folder", comment: "Bookmark edit form section header")) {
-                    Picker(NSLocalizedString("Folder", comment: "Bookmark folder picker label"), selection: $selectedFolderId) {
-                        Text("/").tag(-1)
-                        ForEach(folders.filter { $0.id != -1 }) { folder in
-                            Text(folder.title).tag(folder.id)
+                    if isLoadingFolders {
+                        HStack {
+                            Text("Folder", comment: "Bookmark folder picker label")
+                            Spacer()
+                            ProgressView()
+                        }
+                    } else {
+                        Picker(NSLocalizedString("Folder", comment: "Bookmark folder picker label"), selection: $selectedFolderId) {
+                            Text("/").tag(-1)
+                            ForEach(folders.filter { $0.id != -1 }) { folder in
+                                Text(folder.title).tag(folder.id)
+                            }
                         }
                     }
                 }
@@ -93,7 +130,7 @@ struct BookmarkEditView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { finish(saved: false) }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     if isSaving {
@@ -114,24 +151,25 @@ struct BookmarkEditView: View {
             .split(separator: ",")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { !$0.isEmpty }
-        let folderIds = [selectedFolderId]
-        let client = CallNextcloud()
+        let draft = BookmarkDraft(url: url, title: title, tags: tags, folderIds: [selectedFolderId])
 
-        let onComplete: (Bool) -> Void = { success in
+        onSave(draft) { success in
             isSaving = false
             if success {
-                dismiss()
+                finish(saved: true)
             } else {
                 errorMessage = isEditing
                     ? NSLocalizedString("Could not save changes.", comment: "Error saving an edited bookmark")
                     : NSLocalizedString("Could not create bookmark.", comment: "Error creating a new bookmark")
             }
         }
+    }
 
-        if let bookmark = bookmark {
-            store.updateBookmark(id: bookmark.id, url: url, title: title, tags: tags, folders: folderIds, client: client, completion: onComplete)
+    private func finish(saved: Bool) {
+        if let onFinish = onFinish {
+            onFinish(saved)
         } else {
-            store.createBookmark(url: url, title: title, tags: tags, folders: folderIds, client: client, completion: onComplete)
+            dismiss()
         }
     }
 }

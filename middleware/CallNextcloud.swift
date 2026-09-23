@@ -162,23 +162,8 @@ struct CallNextcloud
         return folders
     }
     
-    func postURL(url: String, completionHandler: @escaping (JSON?, Error?) -> Void) {
-        let parameters: [String: String] = [
-            "url": url
-        ]
-        AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                let swiftyJsonVar = JSON(value)["data"]
-                completionHandler(swiftyJsonVar, nil)
-            case .failure(let error):
-                completionHandler(nil, error)
-            }
-        }
-    }
-
     /// Creates a new bookmark with the given fields (used by the manual "add
-    /// bookmark" flow; the Share Extension uses the simpler `postURL` above).
+    /// bookmark" flow and the Share Extension).
     func createBookmark(url: String, title: String, tags: [String], folders: [Int], completion: @escaping (Bookmark?, Error?) -> Void) {
         let parameters: [String: Any] = ["url": url, "title": title, "tags": tags, "folders": folders]
         AF.request(urlFromSettings + "/index.php/apps/bookmarks/public/rest/v2/bookmark", method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseJSON { response in

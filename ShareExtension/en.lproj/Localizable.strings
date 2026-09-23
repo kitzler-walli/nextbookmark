@@ -1,4 +1,17 @@
 "No link was found to save." = "No link was found to save.";
-"Couldn't save the bookmark: %@" = "Couldn't save the bookmark: %@";
 "Couldn't Save Bookmark" = "Couldn't Save Bookmark";
 "OK" = "OK";
+
+/* Bookmark form (BookmarkEditView) */
+"URL" = "URL";
+"Title" = "Title";
+"Tags" = "Tags";
+"Folder" = "Folder";
+"tag1, tag2" = "tag1, tag2";
+"Add Bookmark" = "Add Bookmark";
+"Edit Bookmark" = "Edit Bookmark";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Could not save changes." = "Could not save changes.";
+"Could not create bookmark." = "Could not create bookmark.";
+"Open URL" = "Open URL";

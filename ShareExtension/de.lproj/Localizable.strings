@@ -1,4 +1,17 @@
 "No link was found to save." = "Es wurde kein Link zum Speichern gefunden.";
-"Couldn't save the bookmark: %@" = "Das Lesezeichen konnte nicht gespeichert werden: %@";
 "Couldn't Save Bookmark" = "Lesezeichen konnte nicht gespeichert werden";
 "OK" = "OK";
+
+/* Bookmark form (BookmarkEditView) */
+"URL" = "URL";
+"Title" = "Titel";
+"Tags" = "Tags";
+"Folder" = "Ordner";
+"tag1, tag2" = "tag1, tag2";
+"Add Bookmark" = "Lesezeichen hinzufügen";
+"Edit Bookmark" = "Lesezeichen bearbeiten";
+"Cancel" = "Abbrechen";
+"Save" = "Speichern";
+"Could not save changes." = "Änderungen konnten nicht gespeichert werden.";
+"Could not create bookmark." = "Lesezeichen konnte nicht erstellt werden.";
+"Open URL" = "URL öffnen";

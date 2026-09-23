@@ -48,6 +48,7 @@
 		98E12EFD23A82D7600E6CDD6 /* CallNextcloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E12EFC23A82D7600E6CDD6 /* CallNextcloud.swift */; };
 		7D692828071DDC1945BEFA2E /* ShareURLExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEE051C7CE0F99EA7F0B3279 /* ShareURLExtractor.swift */; };
 		F43988B83A0E01FBC2DBEF61 /* ShareURLExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84DA8B3A2002E8DA7C404F9 /* ShareURLExtractorTests.swift */; };
+		5A1E0B3C9D2F4E6A8B7C1D2E /* BookmarkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA22397DF10A3D1F9F3740 /* BookmarkEditView.swift */; };
 		7E00E7CBCDB91C607914392E /* BookmarkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA22397DF10A3D1F9F3740 /* BookmarkEditView.swift */; };
 		46F270D8902F065EAB7509B6 /* FaviconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE60C571C2C2FEC8CB79776 /* FaviconView.swift */; };
 		63C7B8C28B0BD04D37181A87 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6793B284789504C2DBF6443 /* Localizable.strings */; };
@@ -708,6 +709,7 @@
 				98C774B82440C3A400B357B8 /* Bookmark.swift in Sources */,
 				48507DE93FE356CC94BB2018 /* KeychainStore.swift in Sources */,
 				6AF037F6C206A7075A8C5EE8 /* CredentialsStore.swift in Sources */,
+				5A1E0B3C9D2F4E6A8B7C1D2E /* BookmarkEditView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

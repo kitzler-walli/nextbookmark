@@ -123,10 +123,14 @@ struct BookmarksView: View {
                 }
             }
             .sheet(item: $editingBookmark) { book in
-                BookmarkEditView(store: store, bookmark: book, folders: store.folders, defaultFolderId: store.currentRoot.id)
+                BookmarkEditView(bookmark: book, folders: store.folders, defaultFolderId: store.currentRoot.id) { draft, completion in
+                    store.updateBookmark(id: book.id, url: draft.url, title: draft.title, tags: draft.tags, folders: draft.folderIds, client: CallNextcloud(), completion: completion)
+                }
             }
             .sheet(isPresented: $isAddingBookmark) {
-                BookmarkEditView(store: store, bookmark: nil, folders: store.folders, defaultFolderId: store.currentRoot.id)
+                BookmarkEditView(bookmark: nil, folders: store.folders, defaultFolderId: store.currentRoot.id) { draft, completion in
+                    store.createBookmark(url: draft.url, title: draft.title, tags: draft.tags, folders: draft.folderIds, client: CallNextcloud(), completion: completion)
+                }
             }
         }.navigationViewStyle(StackNavigationViewStyle())
             .onAppear() {
